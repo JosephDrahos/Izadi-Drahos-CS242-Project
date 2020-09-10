@@ -2,6 +2,9 @@ package data;
 
 import java.util.Date;
 
+/*
+
+*/
 
 public abstract class ClackData {
 	protected String userName;

@@ -1,5 +1,8 @@
 package data;
 
+/*
+
+*/
 public abstract class MessageClackData extends ClackData{
 	private String message;
 	
