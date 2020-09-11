@@ -11,7 +11,7 @@ public class MessageClackData extends ClackData{
 	
 	public MessageClackData(){
 		super();
-		this.message = "NULL";
+		this.message = null;
 	}
 	
 	@Override
