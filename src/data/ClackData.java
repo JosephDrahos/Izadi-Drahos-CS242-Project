@@ -6,7 +6,7 @@ import java.util.Date;
 
 */
 
-public abstract class ClackData {
+public class ClackData {
 	protected String userName;
 	private int type;
 	protected Date date;
@@ -43,5 +43,7 @@ public abstract class ClackData {
 		return this.date;
 	}
 	
-	public abstract String getData();
+	public String getData() {
+		return "Data";
+	}
 }

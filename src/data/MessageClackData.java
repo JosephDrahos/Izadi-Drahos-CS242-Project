@@ -1,21 +1,20 @@
 package data;
 
-/*
 
-*/
-public abstract class MessageClackData extends ClackData{
+public class MessageClackData extends ClackData{
 	private String message;
 	
-	MessageClackData(String userName, String message, int type){
+	public MessageClackData(String userName, String message, int type){
 		super(userName, type);
 		this.message = message;
 	}
 	
-	MessageClackData(){
+	public MessageClackData(){
 		super();
 		this.message = "NULL";
 	}
 	
+	@Override
 	public String getData() {
 		return this.message;
 	}
@@ -35,6 +34,13 @@ public abstract class MessageClackData extends ClackData{
 	@Override
 	public boolean equals(Object other) {
 		MessageClackData otherData = (MessageClackData) other;
-		return this.hashCode() == otherData.hashCode();
+		return this.message == otherData.getData() && this.userName == otherData.userName && this.getType() == otherData.getType();
+	}
+	
+	@Override
+	public String toString() {
+		String output;
+		output = "Username: " + super.userName + "\n" + "Type: " + getType() + "\n" + "Date: " + getDate() + "\n" + "Message: " + this.message + "\n";
+		return output;
 	}
 }
