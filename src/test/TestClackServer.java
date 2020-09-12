@@ -12,25 +12,27 @@ import main.ClackServer;
 public class TestClackServer {
 	/**
 	 * 
-	 * This main method allows 
+	 * Allows to take in command line arguments and tests cases for ClackServer Class 
 	 * 
 	 * @param args
 	 */
 	public static void main(String[] args) {
-		
-		ClackServer testServer = new ClackServer(1200);
-		ClackServer testServer2 = new ClackServer();
+		/**
+		 * Runs various test cases for each function of ClackServer Class
+		 */
+		ClackServer testServer = new ClackServer(1200); //Inputs 1200 for port number 
+		ClackServer testServer2 = new ClackServer();	//Runs ClackServer constructor with no input
 		
 		ClackServer testServer3 = new ClackServer(-2000); //Testing for negative input port
 				
 		
-		System.out.println(testServer.equals(testServer2));
-		testServer = testServer2;
-		System.out.println(testServer.equals(testServer2));
+		System.out.println(testServer.equals(testServer2));	//Tries equals method while not equal
+		testServer = testServer2;							//Sets testServer to testServer2
+		System.out.println(testServer.equals(testServer2));	//Tries equals method while equal
 		
-		System.out.println(testServer.toString());
-		System.out.println(testServer2.toString());
-		
+		//Runs toString for all test cases
+		System.out.println(testServer.toString());			
+		System.out.println(testServer2.toString());			
 		System.out.println(testServer3.toString());
 		
 	}
