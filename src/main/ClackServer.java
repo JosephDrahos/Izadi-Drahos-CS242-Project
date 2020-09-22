@@ -57,7 +57,7 @@ public class ClackServer {
 	 */	 
 	 @Override
 	public int hashCode() {
-		return (int) ((Math.random() * ( 300000-1)) + 1);
+		return this.port;
 	}
 	
 	/**

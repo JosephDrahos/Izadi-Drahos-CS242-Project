@@ -10,7 +10,7 @@ import java.util.Date;
 
 public class ClackData {
 	protected String userName;	//String representing name of client user
-	private int type;			//represents the kind of data exchanged between the client and the server
+	protected int type;			//represents the kind of data exchanged between the client and the server
 	protected Date date;		//Date object representing date when ClackData object was created
 	
 	public final static int CONSTANT_LISTUSERS = 0;		//give a listing of all users connected to this session
@@ -71,9 +71,42 @@ public class ClackData {
 	
 	/**
 	 * 
+	 * @param key
+	 * @return encrypted data
+	 */
+	public String getData(String key) {
+		return encrypt("Data",key);
+	}
+	/**
+	 * 
 	 * @returns Data as "Data"
 	 */
 	public String getData() {
 		return "Data";
+	}
+	
+	
+	/**
+	 * TODO: Implement
+	 * @param inputString
+	 * @param key
+	 * @return
+	 */
+	protected String encrypt( String inputString, String key) {
+		//String out = new String();
+		
+		return inputString;
+	}
+	
+	/**
+	 * TODO: Implement
+	 * @param inputString
+	 * @param key
+	 * @return
+	 */
+	protected String decrypt( String inputString, String key) {
+		//String out = new String();
+		
+		return inputString;
 	}
 }

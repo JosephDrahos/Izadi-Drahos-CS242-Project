@@ -1,4 +1,5 @@
 package data;
+import java.io.*;
 /**
  * Represents data from ClackData as the name and contents of a file
  * Inherits variables and methods from ClackData
@@ -45,6 +46,14 @@ public class FileClackData extends ClackData{
 	public String getFileName() {
 		return this.fileName;
 	}
+	
+	/**
+	 * @returns encrypted file contents
+	 */
+	@Override
+	public String getData(String key) {
+		return encrypt(this.fileContents, key);
+	}
 	/**
 	 * @returns file Contents
 	 */
@@ -54,10 +63,42 @@ public class FileClackData extends ClackData{
 	}
 	
 	/**
-	 * Reads File Contents
-	 * WILL IMPLEMENT LATER
+	 * Instantiates fileContents by readying the contents of this.fileName
+	 * @throws IOException
 	 */
-	public void readFileContents() {
+	public void readFileContents() throws IOException {
+		try {
+			BufferedReader br = new BufferedReader( new FileReader(this.fileName));
+			String nextLine = new String();
+			while( (nextLine = br.readLine()) != null) {
+				this.fileContents += nextLine;
+			}
+			br.close();
+		}catch (FileNotFoundException fnfe) {
+			System.err.println("File" + this.fileName + "does not exist");
+			throw new IOException();
+		}
+		
+	}
+	
+	/**
+	 * Instantiates fileContents by readying the contents of this.fileName and encrypting the data
+	 * @param key
+	 * @throws IOException
+	 */
+	public void readFileContents(String key) throws IOException {
+		try {
+			BufferedReader br = new BufferedReader( new FileReader(this.fileName));
+			String nextLine = new String();
+			while( (nextLine = br.readLine()) != null) {
+				this.fileContents += nextLine;
+			}
+			this.fileContents = encrypt(this.fileContents, key);
+			br.close();
+		}catch (FileNotFoundException fnfe) {
+			System.err.println("File" + this.fileName + "does not exist");
+			throw new IOException();
+		}
 		
 	}
 	
@@ -66,16 +107,35 @@ public class FileClackData extends ClackData{
 	 * WILL IMPLEMENT LATER
 	 */
 	public void writeFileContents() {
-		
+		try {
+			FileWriter writer = new FileWriter(this.fileName);
+			writer.write(this.fileContents);
+			writer.close();
+		}catch (IOException ioe) {
+			System.err.println(ioe.getMessage());
+		}
 	}
 	
+	public void writeFileContents(String key) {
+		try {
+			FileWriter writer = new FileWriter(this.fileName);
+			writer.write(decrypt(this.fileContents, key));
+			writer.close();
+		}catch (IOException ioe) {
+			System.err.println(ioe.getMessage());
+		}
+	}
 	/**
 	 * Overrides default hashCode function to give unique hashCode for every fileClackData object
 	 * @returns hashCode number
 	 */
 	@Override
 	public int hashCode() {
-		return (int) ((Math.random() * ( 300000-1)) + 1);
+		int hash = 7;
+		hash = 31 * hash + fileName.hashCode();
+		hash = 31 * hash + fileContents.hashCode();
+		hash = 31 * hash + userName.hashCode();
+		return hash;
 	}
 	
 	/**
