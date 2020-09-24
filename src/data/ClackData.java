@@ -93,9 +93,31 @@ public class ClackData {
 	 * @return
 	 */
 	protected String encrypt( String inputString, String key) {
-		//String out = new String();
+		String keystr = new String();
+		int len = inputString.length();
 		
-		return inputString;
+		int keyindex = 0;
+		for(int i = 0; i < len; i++) {
+			if(inputString.charAt(i) == ' ') {
+				keystr += ' ';
+			}else {
+				keystr += key.charAt(keyindex % key.length());
+				keyindex++;
+			}
+		}
+		String out = new String();
+		String abc = "abcdefghijklmnopqrstuvwxyz";
+		
+		for(int i = 0; i < len; i++) {
+			if(inputString.charAt(i) == ' ') {
+				out += ' ';
+			} else if (Character.isLowerCase(inputString.charAt(i))) {
+				out += abc.charAt(((int)inputString.charAt(i) + (int)keystr.charAt(i)) % 26);
+			}else {
+				out += Character.toUpperCase(abc.charAt(((int)inputString.charAt(i) + (int)keystr.charAt(i)) % 26));
+			}
+		}
+		return out;
 	}
 	
 	/**
@@ -105,8 +127,39 @@ public class ClackData {
 	 * @return
 	 */
 	protected String decrypt( String inputString, String key) {
-		//String out = new String();
+		int len = inputString.length();
+		String keystr = new String();
+		int keyindex = 0;
 		
-		return inputString;
+		for(int i = 0; i < len; i++) {
+			if(inputString.charAt(i) == ' ') {
+				keystr += ' ';
+			}else {
+				keystr += key.charAt(keyindex % key.length());
+				keyindex++;
+			}
+		}
+		
+		System.out.println(keystr);
+		String out = new String();
+		for(int i = 0; i < len; i++) {
+			if(inputString.charAt(i) == ' ') {
+				out += ' ';
+			} else if (Character.isLowerCase(inputString.charAt(i))) {
+				if((int)inputString.charAt(i) - (int)keystr.charAt(i) >= 0) {
+					out += (char)((int)inputString.charAt(i) - (int)keystr.charAt(i) + 97);
+				}else {
+					out += (char)(((int)inputString.charAt(i) - (int)keystr.charAt(i) + 26)+ 97);
+				}
+			}else {
+				if((int)inputString.charAt(i) - (int)keystr.charAt(i) >= 0) {
+					out += (char)((int)inputString.charAt(i) - (int)keystr.charAt(i) + 65);
+				} else {
+					out += (char)(((int)inputString.charAt(i) - (int)keystr.charAt(i) + 26)+ 65);
+				}
+			}
+		}
+		
+		return out;
 	}
 }
