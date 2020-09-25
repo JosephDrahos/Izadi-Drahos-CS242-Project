@@ -24,10 +24,10 @@ public class ClackData {
 	 * @param type: sets data type being exchanged
 	 */
 	ClackData(String userName, int type){
-		
 		this.userName = userName;
 		this.type = type;
 		this.date = new Date();	//sets date to date of when constructor is called
+			
 	}
 	
 	/**

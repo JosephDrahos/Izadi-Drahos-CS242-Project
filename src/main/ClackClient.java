@@ -1,7 +1,9 @@
 package main;
 
-import data.ClackData;
-import data.FileClackData;
+import java.util.Scanner;
+import java.io.*;
+import data.*;
+
 /**
  * This class represents the client user
  * @author Joseph Drahos & Rod Izadi
@@ -14,7 +16,8 @@ public class ClackClient {
 	private int port;							//integer representing port number on server connected to
 	private boolean closeConnection;			//boolean representing whether connection is closed or not
 	private ClackData dataToSendToServer;		//ClackData object representing data sent to server
-	private ClackData dataToRecieveFromServer;	//ClackData object representing data received from the server
+	private ClackData dataToReceiveFromServer;	//ClackData object representing data received from the server
+	private Scanner inFromStd;
 	
 	/**
 	 * Constructor for username, host name, and port,connection is automatically set to open
@@ -23,13 +26,30 @@ public class ClackClient {
 	 * @param hostName: name of host
 	 * @param port: port number for connection
 	 */
-	public ClackClient (String userName, String hostName, int port){
-		this.userName = userName;
-		this.hostName = hostName;
-		this.port = port;
-		this.closeConnection = false;
-		this.dataToSendToServer = null;
-		this.dataToRecieveFromServer = null;
+	public ClackClient (String userName, String hostName, int port)throws IllegalArgumentException{
+		try {
+			if(userName == null || hostName == null || port < 1024) {
+				throw new IllegalArgumentException();
+			}
+			this.userName = userName;
+			this.hostName = hostName;
+			this.port = port;
+			this.closeConnection = false;
+			this.dataToSendToServer = null;
+			this.dataToReceiveFromServer = null;
+	
+		}
+		catch(IllegalArgumentException IAE){
+			if(userName == null) {
+				System.err.println("ERROR: USERNAME CANNOT BE NULL");
+			}
+			else if(hostName == null) {
+				System.err.println("ERROR: HOSTNAME CANNOT BE NULL");
+			}
+			else if(port < 1024) {
+				System.err.println("ERROR: PORT CANNOT BE LESS THAN 1024");
+			}
+		}
 	}
 	
 	/**
@@ -60,13 +80,50 @@ public class ClackClient {
 	 * WILL IMPLEMENT LATER
 	 */
 	public void start() {
-		
+		inFromStd = new Scanner(System.in);
+		readClientData();
+		inFromStd.close();
+		printData();
+		dataToReceiveFromServer = dataToSendToServer; 
+
 	}
 	
 	/**
 	 * WILL IMPLEMENT LATER
 	 */
 	public void readClientData() {
+		
+			String userIn = new String();
+			inFromStd.useDelimiter("/////\\\\.txt.org.png");
+			while(inFromStd.hasNext()) {
+			userIn += inFromStd.next();
+			}
+		
+			if(userIn == "DONE") {
+				this.closeConnection = true;
+			}
+			else if(userIn.substring(0, 8) == "SENDFILE ") {
+				String fileName = new String();
+				try {
+					Scanner findFileName = new Scanner(userIn.substring(9,((userIn.length())-1)));
+					fileName = findFileName.next();
+					BufferedReader bufferedReader = new BufferedReader(new FileReader(fileName));
+					bufferedReader.close();
+					FileClackData userFile = new FileClackData(this.userName,fileName,3);
+					System.out.println("File " + fileName + " was read");
+				}
+				catch(IOException IOE) {
+					FileClackData userFile = new FileClackData();
+					System.err.println("File " + fileName + " could not be read.");
+				}
+			}
+			else if(userIn == "LISTUSERS") {
+				
+			}
+			else {
+				ClackData dataToSendToServer = new MessageClackData(this.userName, null ,3);
+			}
+	
 		
 	}
 	
@@ -81,7 +138,7 @@ public class ClackClient {
 	 * WILL IMPLEMENT LATER
 	 */
 	public void printData() {
-		
+		System.out.println(dataToReceiveFromServer.getData());
 	}
 	
 	/**
@@ -134,7 +191,7 @@ public class ClackClient {
 	@Override
 	public String toString() {
 		String output;
-		output = "Username: " + this.userName + "\n" + "hostName: " + this.hostName + "\n" + "Port: " + getPort() + "\n" + "Closed Connection: " + this.closeConnection + "\n" + "Data to Send: " + this.dataToSendToServer + "\n" + "Data to Receive: " + this.dataToRecieveFromServer + "\n";
+		output = "Username: " + this.userName + "\n" + "hostName: " + this.hostName + "\n" + "Port: " + getPort() + "\n" + "Closed Connection: " + this.closeConnection + "\n" + "Data to Send: " + this.dataToSendToServer + "\n" + "Data to Receive: " + this.dataToReceiveFromServer + "\n";
 		return output;
 	}
 }
