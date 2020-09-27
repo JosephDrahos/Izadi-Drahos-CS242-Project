@@ -3,7 +3,7 @@ import java.io.*;
 /**
  * Represents data from ClackData as the name and contents of a file
  * Inherits variables and methods from ClackData
- * @author Joseph Drahos & Rod Izadi
+ * @author Joseph Drahos  Rod Izadi
  *
  */
 public class FileClackData extends ClackData{
@@ -41,21 +41,21 @@ public class FileClackData extends ClackData{
 	
 	/**
 	 * 
-	 * @returns Name of file
+	 * @return Name of file
 	 */
 	public String getFileName() {
 		return this.fileName;
 	}
 	
 	/**
-	 * @returns encrypted file contents
+	 * @return encrypted file contents
 	 */
 	@Override
 	public String getData(String key) {
 		return encrypt(this.fileContents, key);
 	}
 	/**
-	 * @returns file Contents
+	 * @return file Contents
 	 */
 	@Override
 	public String getData() {
@@ -64,7 +64,7 @@ public class FileClackData extends ClackData{
 	
 	/**
 	 * Instantiates fileContents by readying the contents of this.fileName
-	 * @throws IOException
+	 * @throws file not found Exception
 	 */
 	public void readFileContents() throws IOException {
 		try {
@@ -83,7 +83,7 @@ public class FileClackData extends ClackData{
 	
 	/**
 	 * Instantiates fileContents by readying the contents of this.fileName and encrypting the data
-	 * @param key
+	 * @param ecryption key
 	 * @throws IOException
 	 */
 	public void readFileContents(String key) throws IOException {
@@ -127,7 +127,7 @@ public class FileClackData extends ClackData{
 	}
 	/**
 	 * Overrides default hashCode function to give unique hashCode for every fileClackData object
-	 * @returns hashCode number
+	 * @return hashCode number
 	 */
 	@Override
 	public int hashCode() {
@@ -140,7 +140,7 @@ public class FileClackData extends ClackData{
 	
 	/**
 	 * Overrides default equals method and compares all variables in a fileClackData object to check equivalence
-	 * @returns true or false
+	 * @return true or false
 	 */
 	@Override
 	public boolean equals(Object other) {

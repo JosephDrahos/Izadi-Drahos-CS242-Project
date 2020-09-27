@@ -3,7 +3,7 @@ package data;
 /**
  * Represents data from ClackData as a message
  * inherits ClackData variables and methods
- * @author Rod Izadi & Joseph Drahos
+ * @author Rod Izadi  Joseph Drahos
  *
  */
 public class MessageClackData extends ClackData{
@@ -41,7 +41,7 @@ public class MessageClackData extends ClackData{
 	}
 	
 	/**
-	 * @returns encrypted message
+	 * @return encrypted message
 	 */
 	@Override
 	public String getData(String key) {
@@ -49,7 +49,7 @@ public class MessageClackData extends ClackData{
 	}
 	
 	/**
-	 * @returns message data
+	 * @return message data
 	 */
 	@Override
 	public String getData() {
@@ -58,7 +58,7 @@ public class MessageClackData extends ClackData{
 	
 	/**
 	 * Overrides default hashCode function to give unique hashCode for every messageClackData object
-	 * @returns hashCode number
+	 * @return hashCode number
 	 */
 	@Override
 	public int hashCode() {
@@ -70,7 +70,7 @@ public class MessageClackData extends ClackData{
 	
 	/**
 	 * Overrides default equals method and compares all variables in a messageClackData object to check equivalence
-	 * @returns true or false
+	 * @return true or false
 	 */
 	@Override
 	public boolean equals(Object other) {

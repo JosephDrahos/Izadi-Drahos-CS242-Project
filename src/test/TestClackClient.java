@@ -4,13 +4,13 @@ import main.ClackClient;
 /**
  * This tests every case for the ClackClient class
  * 
- * @author Rod Izadi & Joseph Drahos
+ * @author Rod Izadi  Joseph Drahos
  *
  */
 public class TestClackClient {
 	/**
 	 * Takes command line arguments which there none of
-	 * @param args
+	 * @param list of user input string args
 	 */
 	public static void main(String[] args) {
 		/**

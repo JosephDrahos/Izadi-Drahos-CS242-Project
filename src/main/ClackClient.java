@@ -6,7 +6,7 @@ import data.*;
 
 /**
  * This class represents the client user
- * @author Joseph Drahos & Rod Izadi
+ * @author Joseph Drahos Rod Izadi
  *
  */
 public class ClackClient {
@@ -167,7 +167,7 @@ public class ClackClient {
 	
 	/**
 	 * Overrides default hashCode function to give unique hashCode for every ClackClient object
-	 * @returns hashCode number
+	 * @return hashCode number
 	 */
 	@Override
 	public int hashCode() {
@@ -176,7 +176,7 @@ public class ClackClient {
 	
 	/**
 	 * Overrides default equals method and compares all variables in a ClackClient object to check equivalence
-	 * @returns true or false
+	 * @return true or false
 	 */
 	@Override
 	public boolean equals(Object other) {

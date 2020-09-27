@@ -4,13 +4,13 @@ import data.*;
 /**
  * This tests every case for the ClackData class
  * 
- * @author Rod Izadi & Joseph Drahos
+ * @author Rod Izadi  Joseph Drahos
  *
  */
 public class TestClackData {
 	/**
 	 * Takes command line arguments which there none of
-	 * @param args
+	 * @param list of user input strings args
 	 */
 	public static void main(String[] args) {
 		/**
