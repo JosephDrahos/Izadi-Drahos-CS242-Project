@@ -77,7 +77,7 @@ public class ClackClient {
 	}
 	
 	/**
-	 * WILL IMPLEMENT LATER
+	 *Starts client's communication with the server
 	 */
 	public void start() {
 		inFromStd = new Scanner(System.in);
@@ -89,12 +89,12 @@ public class ClackClient {
 	}
 	
 	/**
-	 * WILL IMPLEMENT LATER
+	 * Method receives input form standard input and responds differently based on command. 
 	 */
 	public void readClientData() {
 		
 			String userIn = new String();
-			inFromStd.useDelimiter("/////\\\\.txt.org.png");
+			inFromStd.useDelimiter("/////\\\\.txt.org.png");	//this works
 			while(inFromStd.hasNext()) {
 			userIn += inFromStd.next();
 			}
@@ -135,7 +135,7 @@ public class ClackClient {
 	}
 	
 	/**
-	 * WILL IMPLEMENT LATER
+	 * This method prints out to all the clients the information sent by a particular user 
 	 */
 	public void printData() {
 		System.out.println(dataToReceiveFromServer.getData());

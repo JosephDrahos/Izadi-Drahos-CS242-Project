@@ -88,17 +88,18 @@ public class ClackData {
 	
 	
 	/**
-	 * TODO: Implement
+	 * Used to encrypt text using Vignere Cipher method. With a given key which is used to encrypt a string of text.
+	 * Will return encrypted text as variable "out"
 	 * @param inputString
 	 * @param key
-	 * @return
+	 * @return out
 	 */
 	protected String encrypt( String inputString, String key) {
 		String keystr = new String();
 		int len = inputString.length();
 		
 		int keyindex = 0;
-		for(int i = 0; i < len; i++) {
+		for(int i = 0; i < len; i++) {							//For loop creates Keystring by mapping each letter of input string to key letter
 			if(inputString.charAt(i) == ' ') {
 				keystr += ' ';
 			}else {
@@ -107,32 +108,34 @@ public class ClackData {
 			}
 		}
 		String out = new String();
-		String abc = "abcdefghijklmnopqrstuvwxyz";
+		String abc = "abcdefghijklmnopqrstuvwxyz";	//Alphabet string
 		
 		for(int i = 0; i < len; i++) {
 			if(inputString.charAt(i) == ' ') {
 				out += ' ';
 			} else if (Character.isLowerCase(inputString.charAt(i))) {
-				out += abc.charAt(((int)inputString.charAt(i) + (int)keystr.charAt(i)) % 26);
+				out += Character.toLowerCase(abc.charAt(((int)Character.toUpperCase(inputString.charAt(i)) + (int)keystr.charAt(i)) % 26));
 			}else {
 				out += Character.toUpperCase(abc.charAt(((int)inputString.charAt(i) + (int)keystr.charAt(i)) % 26));
 			}
 		}
+
+
 		return out;
 	}
 	
 	/**
-	 * TODO: Implement
+	 * When passed inputString and correct key will decrypt encrypted inputString and return it as the variable out
 	 * @param inputString
 	 * @param key
-	 * @return
+	 * @return out
 	 */
-	protected String decrypt( String inputString, String key) {
-		int len = inputString.length();
+	public String decrypt( String inputString, String key) {
+		int len = inputString.length();	
 		String keystr = new String();
 		int keyindex = 0;
 		
-		for(int i = 0; i < len; i++) {
+		for(int i = 0; i < len; i++) {				//makes keystring based off of given key and input string
 			if(inputString.charAt(i) == ' ') {
 				keystr += ' ';
 			}else {
@@ -141,16 +144,16 @@ public class ClackData {
 			}
 		}
 		
-		System.out.println(keystr);
+		
 		String out = new String();
-		for(int i = 0; i < len; i++) {
+		for(int i = 0; i < len; i++) {		//For loop reverses Vignere Cipher and makes keystring into legible string. 
 			if(inputString.charAt(i) == ' ') {
 				out += ' ';
 			} else if (Character.isLowerCase(inputString.charAt(i))) {
-				if((int)inputString.charAt(i) - (int)keystr.charAt(i) >= 0) {
-					out += (char)((int)inputString.charAt(i) - (int)keystr.charAt(i) + 97);
+				if((int)inputString.charAt(i) - (int)Character.toLowerCase(keystr.charAt(i)) >= 0) {
+					out += (char)((int)inputString.charAt(i) - (int)Character.toLowerCase(keystr.charAt(i)) + 97);
 				}else {
-					out += (char)(((int)inputString.charAt(i) - (int)keystr.charAt(i) + 26)+ 97);
+					out += (char)(((int)inputString.charAt(i) - (int)Character.toLowerCase(keystr.charAt(i)) + 26)+ 97);
 				}
 			}else {
 				if((int)inputString.charAt(i) - (int)keystr.charAt(i) >= 0) {
