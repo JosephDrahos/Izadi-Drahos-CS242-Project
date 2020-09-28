@@ -5,7 +5,7 @@ import main.ClackServer;
 /**
  * This tests every case for the ClackServer class
  * 
- * @author Rod Izadi & Joseph Drahos
+ * @author Rod Izadi  Joseph Drahos
  *
  */
 
@@ -14,7 +14,7 @@ public class TestClackServer {
 	 * 
 	 * Allows to take in command line arguments and tests cases for ClackServer Class 
 	 * 
-	 * @param args
+	 * @param list of user input strings args
 	 */
 	public static void main(String[] args) {
 		/**

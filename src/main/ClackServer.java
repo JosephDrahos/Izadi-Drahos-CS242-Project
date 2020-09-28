@@ -4,7 +4,7 @@ import data.ClackData;
 import java.lang.Math;
 /**
  * Class is a blueprint for a ClackServer object that contains information about the port number that clients connect to
- * @author Rod Izadi & Joseph Drahos
+ * @author Rod Izadi Joseph Drahos
  *
  */
 public class ClackServer {
@@ -39,7 +39,7 @@ public class ClackServer {
 	}
 
 	/**
-	 * WILL IMPLEMENT LATER
+	 * WILL IMPELEMENT LATER
 	 */
 	public void receiveData() {
 		
@@ -53,7 +53,7 @@ public class ClackServer {
 	 }
 	/**
 	 * Overrides default hashCode function to give unique hashCode for every ClackServer object
-	 * @returns hashCode number
+	 * @return hashCode number
 	 */	 
 	 @Override
 	public int hashCode() {
@@ -62,7 +62,7 @@ public class ClackServer {
 	
 	/**
 	 * Overrides default equals method and compares all variables in a ClackServer object to check equivalence
-	 * @returns true or false
+	 * @return true or false
 	 */ 
 	@Override
 		public boolean equals(Object other) {

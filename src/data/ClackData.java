@@ -4,7 +4,7 @@ import java.util.Date;
 
 /**
  * This class represents the data sent between the client and the server.
- * @author Joseph Drahos & Rod Izadi
+ * @author Joseph Drahos  Rod Izadi
  *
  */
 
@@ -47,7 +47,8 @@ public class ClackData {
 	}
 	
 	/**
-	 * @returns type of ClackData data type
+	 * 
+	 * @return type of ClackData data type
 	 */
 	public int getType() {
 		return this.type;
@@ -63,7 +64,7 @@ public class ClackData {
 	
 	/**
 	 * 
-	 * @returns date of when ClackData data type was made
+	 * @return date of when ClackData data type was made
 	 */
 	public Date getDate() {
 		return this.date;
@@ -79,7 +80,7 @@ public class ClackData {
 	}
 	/**
 	 * 
-	 * @returns Data as "Data"
+	 * @return Data as "Data"
 	 */
 	public String getData() {
 		return "Data";
