@@ -41,11 +41,11 @@ public class MessageClackData extends ClackData{
 	}
 	
 	/**
-	 * @return encrypted message
+	 * @return decrypted message
 	 */
 	@Override
 	public String getData(String key) {
-		return encrypt(this.message, key);
+		return decrypt(this.message, key);
 	}
 	
 	/**

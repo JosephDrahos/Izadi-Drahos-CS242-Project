@@ -1,5 +1,5 @@
 package test;
-
+import java.io.*;
 import data.*;
 /**
  * This tests every case for the ClackData class
@@ -16,13 +16,17 @@ public class TestClackData {
 		/**
 		 * Runs test cases for ClackData
 		 */
-		MessageClackData testMessage = new MessageClackData("Test Name","Message Test",0);	//Sets test case for message with arguments filled
+		MessageClackData testMessage = new MessageClackData("Test Name","Brave New World","TIME",1);	//Sets test case for message with arguments filled
+		MessageClackData testMessage1 = new MessageClackData("TypeTest2", "TypeTest2", "Burger", 2);
 		MessageClackData testMessage2 = new MessageClackData();								//Sets test case for message with no arguments
 		
-		MessageClackData testMessage3 = new MessageClackData( null, "BeeBop", 0 );			//Sets test case with null username
+		MessageClackData testMessage3 = new MessageClackData( null, "BeeBop", 3 );			//Sets test case with null username
 		
 		//Runs getData method for message test cases
 		System.out.println(testMessage.getData());
+		System.out.println(testMessage.getData("TIME"));
+		System.out.println(testMessage1.getData());
+		System.out.println(testMessage3.getData());
 		System.out.println(testMessage2.getData());
 		
 		//Runs toString method message for test cases
@@ -37,6 +41,7 @@ public class TestClackData {
 		
 		
 		FileClackData testFile = new FileClackData("DrahosIzadi","Test File",2);	//Sets test case for file with arguments filled
+		FileClackData testFile1 = new FileClackData("Part 2 Test","Part2_Document.txt",2);
 		FileClackData testFile2 = new FileClackData();								//Sets test case for file with arguments empty
 		
 		//Runs getData method for file test cases
@@ -57,5 +62,14 @@ public class TestClackData {
 		//Runs toString method for file test cases
 		System.out.println(testFile.toString());
 		System.out.println(testFile2.toString());
+		try {
+			testFile1.readFileContents();
+		}
+		catch(IOException IOE){
+			System.err.println("Bababoey");
+		}
+		System.out.println(testFile1.getData());
+		
+		
 	}
 }
