@@ -171,7 +171,10 @@ public class ClackClient {
 	 */
 	@Override
 	public int hashCode() {
-		return (int) ((Math.random() * ( 300000-1)) + 1);
+		int hash = 7;
+		hash = 31 * hash + userName.hashCode();
+		hash = 31 * hash + hostName.hashCode();
+		return hash;
 	}
 	
 	/**

@@ -62,13 +62,8 @@ public class TestClackData {
 		//Runs toString method for file test cases
 		System.out.println(testFile.toString());
 		System.out.println(testFile2.toString());
-		try {
-			testFile1.readFileContents();
-		}
-		catch(IOException IOE){
-			System.err.println("Bababoey");
-		}
-		System.out.println(testFile1.getData());
+		System.out.println(testFile1.toString());
+		
 		
 		
 	}
