@@ -126,16 +126,7 @@ public class ClackClient {
 				}
 				else {
 					ClackData dataToSendToServer = new MessageClackData(this.userName, null ,3);
-					System.out.println("BItch Im smoke");
-					String no = userIn;
-					System.out.println(userIn.length());
-					//System.out.println((int)userIn.charAt(3));
-					for(int i = 0; i < userIn.length() -1; i++) {
-						System.out.print((int)userIn.charAt(i) + " ");
-						
-					}
-					
-			}
+				}
 		}
 		catch(InputMismatchException ime) {
 			System.err.println(ime.getMessage());
