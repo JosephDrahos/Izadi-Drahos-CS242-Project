@@ -19,7 +19,12 @@ public class FileClackData extends ClackData{
 	public FileClackData(String userName, String fileName, int type){
 		super(userName, type);
 		this.fileName = fileName;
-		this.fileContents = null;
+		this.fileContents = "";
+		try {
+			this.readFileContents();
+		}catch (IOException ioe) {
+			System.err.println(ioe.getMessage());
+		}
 	}
 	
 	/**
@@ -96,7 +101,7 @@ public class FileClackData extends ClackData{
 			this.fileContents = encrypt(this.fileContents, key);
 			br.close();
 		}catch (FileNotFoundException fnfe) {
-			System.err.println("File" + this.fileName + "does not exist");
+			System.err.println("File " + this.fileName + " does not exist");
 			throw new IOException();
 		}
 		
