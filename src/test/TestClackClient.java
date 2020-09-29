@@ -49,6 +49,7 @@ public class TestClackClient {
 		System.out.println(testClient.equals(testClient2));
 		testClient = testClient2;
 		System.out.println(testClient.equals(testClient2));
-		
+		System.out.println();
+		testClient.start();
 	}
 }

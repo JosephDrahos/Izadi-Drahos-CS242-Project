@@ -1,5 +1,6 @@
 package main;
 
+import java.util.InputMismatchException;
 import java.util.Scanner;
 import java.io.*;
 import data.*;
@@ -17,7 +18,8 @@ public class ClackClient {
 	private boolean closeConnection;			//boolean representing whether connection is closed or not
 	private ClackData dataToSendToServer;		//ClackData object representing data sent to server
 	private ClackData dataToReceiveFromServer;	//ClackData object representing data received from the server
-	private Scanner inFromStd;
+	private Scanner inFromStd; 					// scanner for user input from system.in
+	private static final String KEY = "TIME";   //encryption key
 	
 	/**
 	 * Constructor for username, host name, and port,connection is automatically set to open
@@ -35,8 +37,8 @@ public class ClackClient {
 			this.hostName = hostName;
 			this.port = port;
 			this.closeConnection = false;
-			this.dataToSendToServer = null;
-			this.dataToReceiveFromServer = null;
+			//this.dataToSendToServer = null;
+			//this.dataToReceiveFromServer = null;
 	
 		}
 		catch(IllegalArgumentException IAE){
@@ -81,10 +83,11 @@ public class ClackClient {
 	 */
 	public void start() {
 		inFromStd = new Scanner(System.in);
+		inFromStd.useDelimiter("\r|\n");
 		readClientData();
 		inFromStd.close();
+		dataToReceiveFromServer = dataToSendToServer; //temporary
 		printData();
-		dataToReceiveFromServer = dataToSendToServer; 
 
 	}
 	
@@ -92,40 +95,55 @@ public class ClackClient {
 	 * Method receives input form standard input and responds differently based on command. 
 	 */
 	public void readClientData() {
+		System.out.print("Enter Command: ");
+		String userIn = new String();
+		//inFromStd.useDelimiter("/////\\\\.txt.org.png");	//this works
 		
-			String userIn = new String();
-			inFromStd.useDelimiter("/////\\\\.txt.org.png");	//this works
-			while(inFromStd.hasNext()) {
-			userIn += inFromStd.next();
-			}
-		
-			if(userIn == "DONE") {
-				this.closeConnection = true;
-			}
-			else if(userIn.substring(0, 8) == "SENDFILE ") {
-				String fileName = new String();
-				try {
-					Scanner findFileName = new Scanner(userIn.substring(9,((userIn.length())-1)));
-					fileName = findFileName.next();
-					BufferedReader bufferedReader = new BufferedReader(new FileReader(fileName));
-					bufferedReader.close();
-					FileClackData userFile = new FileClackData(this.userName,fileName,3);
-					System.out.println("File " + fileName + " was read");
+		try {
+				userIn = inFromStd.nextLine();
+				if(userIn.contains("DONE")) {
+					this.closeConnection = true;
+					System.out.println("Connection is Closed");
 				}
-				catch(IOException IOE) {
-					FileClackData userFile = new FileClackData();
-					System.err.println("File " + fileName + " could not be read.");
+				else if(userIn.contains("SENDFILE")) {
+					String fileName = new String();
+					if(inFromStd.hasNext()) {
+						try {
+							fileName = inFromStd.nextLine();
+							BufferedReader bufferedReader = new BufferedReader(new FileReader(fileName));
+							FileClackData userFile = new FileClackData(this.userName,fileName,3);
+							System.out.println("File " + fileName + " was read");
+							bufferedReader.close();
+						}
+						catch(IOException IOE) {
+							FileClackData userFile = new FileClackData();
+							System.err.println("File " + fileName + " could not be read.");
+						}
+					}
 				}
+				else if(userIn.contains("LISTUSERS")) {
+					
+				}
+				else {
+					ClackData dataToSendToServer = new MessageClackData(this.userName, null ,3);
+					System.out.println("BItch Im smoke");
+					String no = userIn;
+					System.out.println(userIn.length());
+					//System.out.println((int)userIn.charAt(3));
+					for(int i = 0; i < userIn.length() -1; i++) {
+						System.out.print((int)userIn.charAt(i) + " ");
+						
+					}
+					
 			}
-			else if(userIn == "LISTUSERS") {
-				
-			}
-			else {
-				ClackData dataToSendToServer = new MessageClackData(this.userName, null ,3);
-			}
-	
-		
+		}
+		catch(InputMismatchException ime) {
+			System.err.println(ime.getMessage());
+		}
+		inFromStd.close();
 	}
+
+	
 	
 	/**
 	 * WILL IMPLEMENT LATER
@@ -138,7 +156,7 @@ public class ClackClient {
 	 * This method prints out to all the clients the information sent by a particular user 
 	 */
 	public void printData() {
-		System.out.println(dataToReceiveFromServer.getData());
+		//System.out.println(dataToReceiveFromServer.getData());
 	}
 	
 	/**
