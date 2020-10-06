@@ -4,6 +4,7 @@ import java.util.InputMismatchException;
 import java.util.Scanner;
 import java.io.*;
 import data.*;
+import java.net.*;
 
 /**
  * This class represents the client user
@@ -19,6 +20,8 @@ public class ClackClient {
 	private ClackData dataToSendToServer;		//ClackData object representing data sent to server
 	private ClackData dataToReceiveFromServer;	//ClackData object representing data received from the server
 	private Scanner inFromStd; 					// scanner for user input from system.in
+	private ObjectOutputStream outToServer;		// The way ClackClient sends data packets
+	private ObjectInputStream inFromServer;		// The way ClackClient receives data packets
 	private static final String KEY = "TIME";   //encryption key
 	
 	/**
@@ -37,6 +40,8 @@ public class ClackClient {
 			this.hostName = hostName;
 			this.port = port;
 			this.closeConnection = false;
+			this.outToServer = null;
+			this.inFromServer = null;
 			//this.dataToSendToServer = null;
 			//this.dataToReceiveFromServer = null;
 	
@@ -82,13 +87,27 @@ public class ClackClient {
 	 *Starts client's communication with the server
 	 */
 	public void start() {
-		inFromStd = new Scanner(System.in);
-		inFromStd.useDelimiter("\r|\n");
-		readClientData();
-		inFromStd.close();
-		dataToReceiveFromServer = dataToSendToServer; //temporary
-		printData();
-
+		try {
+			Socket skt = new Socket(hostName, port);
+			
+			inFromStd = new Scanner(System.in);
+			inFromStd.useDelimiter("\r|\n");			
+		
+			ObjectOutputStream outToServer = new ObjectOutputStream(skt.getOutputStream());
+			
+			readClientData();
+			
+			ObjectInputStream inFromServer = new ObjectInputStream(skt.getInputStream());
+			
+			dataToReceiveFromServer = dataToSendToServer; //temporary
+			printData();
+			
+			inFromStd.close();
+			skt.close();
+		}
+		catch(Exception e) {
+			System.err.println("BadBoy!");
+		}
 	}
 	
 	/**
@@ -97,7 +116,6 @@ public class ClackClient {
 	public void readClientData() {
 		System.out.print("Enter Command: ");
 		String userIn = new String();
-		//inFromStd.useDelimiter("/////\\\\.txt.org.png");	//this works
 		
 		try {
 				userIn = inFromStd.nextLine();
