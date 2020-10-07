@@ -96,17 +96,20 @@ public class ClackClient {
 			ObjectOutputStream outToServer = new ObjectOutputStream(skt.getOutputStream());
 			
 			readClientData();
+			sendData();
+			receiveData();
+			printData();
 			
 			ObjectInputStream inFromServer = new ObjectInputStream(skt.getInputStream());
 			
-			dataToReceiveFromServer = dataToSendToServer; //temporary
+			//dataToReceiveFromServer = dataToSendToServer; //temporary
 			printData();
 			
 			inFromStd.close();
 			skt.close();
-		}
+		}	
 		catch(Exception e) {
-			System.err.println("BadBoy!");
+			System.err.println("BadBoy!");//	DONT FORGET EXCEPTION HANDLING
 		}
 	}
 	
@@ -143,7 +146,7 @@ public class ClackClient {
 					
 				}
 				else {
-					ClackData dataToSendToServer = new MessageClackData(this.userName, null ,3);
+					ClackData dataToSendToServer = new MessageClackData(this.userName, userIn ,3);
 				}
 		}
 		catch(InputMismatchException ime) {
@@ -158,7 +161,27 @@ public class ClackClient {
 	 * WILL IMPLEMENT LATER
 	 */
 	public void receiveData() {
-		
+		try {
+			dataToReceiveFromServer = (ClackData) inFromServer.readObject();
+		}
+		catch(IOException ioe) {
+			System.err.println("ERROR: Could not receive data");
+		}
+		catch(ClassNotFoundException CNFE) {
+			System.err.println("ERROR: Class was not found when recieving data");
+		}
+	}
+	
+	/**
+	 * 
+	 */
+	public void sendData() {
+		try {
+			outToServer.writeObject(dataToSendToServer);
+		}
+		catch(IOException ioe) {
+			System.err.println("ERROR: Could not send data");
+		}
 	}
 	
 	/**
