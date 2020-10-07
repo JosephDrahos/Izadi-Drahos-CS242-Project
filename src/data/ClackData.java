@@ -1,14 +1,14 @@
 package data;
 
 import java.util.Date;
-
+import java.io.Serializable;
 /**
  * This class represents the data sent between the client and the server.
  * @author Joseph Drahos  Rod Izadi
  *
  */
 
-public class ClackData {
+public class ClackData implements Serializable {
 	protected String userName;	//String representing name of client user
 	protected int type;			//represents the kind of data exchanged between the client and the server
 	protected Date date;		//Date object representing date when ClackData object was created
