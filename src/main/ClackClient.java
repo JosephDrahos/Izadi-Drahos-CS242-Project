@@ -93,18 +93,19 @@ public class ClackClient {
 			inFromStd = new Scanner(System.in);
 			inFromStd.useDelimiter("\r|\n");			
 		
-			ObjectOutputStream outToServer = new ObjectOutputStream(skt.getOutputStream());
+			outToServer = new ObjectOutputStream(skt.getOutputStream());
 			
 			readClientData();
 			sendData();
+			
+			
+			inFromServer = new ObjectInputStream(skt.getInputStream());
 			receiveData();
 			printData();
-			
-			ObjectInputStream inFromServer = new ObjectInputStream(skt.getInputStream());
-			
 			//dataToReceiveFromServer = dataToSendToServer; //temporary
-			printData();
 			
+			outToServer.close();
+			inFromServer.close();
 			inFromStd.close();
 			skt.close();
 		}	
@@ -158,7 +159,7 @@ public class ClackClient {
 	
 	
 	/**
-	 * WILL IMPLEMENT LATER
+	 * This method receives an instance of clack data from the server
 	 */
 	public void receiveData() {
 		try {
@@ -173,7 +174,7 @@ public class ClackClient {
 	}
 	
 	/**
-	 * 
+	 * This method sends an instance of clack data to the server
 	 */
 	public void sendData() {
 		try {
@@ -188,7 +189,7 @@ public class ClackClient {
 	 * This method prints out to all the clients the information sent by a particular user 
 	 */
 	public void printData() {
-		//System.out.println(dataToReceiveFromServer.getData());
+		System.out.println(dataToReceiveFromServer.getData());
 	}
 	
 	/**
@@ -246,5 +247,32 @@ public class ClackClient {
 		String output;
 		output = "Username: " + this.userName + "\n" + "hostName: " + this.hostName + "\n" + "Port: " + getPort() + "\n" + "Closed Connection: " + this.closeConnection + "\n" + "Data to Send: " + this.dataToSendToServer + "\n" + "Data to Receive: " + this.dataToReceiveFromServer + "\n";
 		return output;
+	}
+	
+	/**
+	 * Main method to test the client side 
+	 */
+	public static void main(String[] args) {
+		Scanner s = new Scanner(args[0]).useDelimiter("@|\\n");
+		ClackClient user;
+		
+		if(s.hasNext()) {
+			String username = s.next();
+			if(s.hasNext()) {
+				String hostname = s.next();
+				if(s.hasNext()) {
+					int port = s.nextInt();
+					user = new ClackClient(username,hostname,port);
+				}else {
+					user = new ClackClient(username,hostname);
+				}
+			}else {
+				user = new ClackClient(username);
+			}
+		}else {
+			user = new ClackClient();
+		}
+		user.start();
+		s.close();
 	}
 }
