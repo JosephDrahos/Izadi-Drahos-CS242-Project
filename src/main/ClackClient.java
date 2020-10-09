@@ -88,6 +88,7 @@ public class ClackClient {
 	 */
 	public void start() {
 		try {
+
 			Socket skt = new Socket(hostName, port);
 			
 			inFromStd = new Scanner(System.in);
@@ -110,7 +111,7 @@ public class ClackClient {
 			skt.close();
 		}	
 		catch(Exception e) {
-			System.err.println("BadBoy!");//	DONT FORGET EXCEPTION HANDLING
+			System.err.println(e.getMessage());//	DONT FORGET EXCEPTION HANDLING
 		}
 	}
 	
@@ -147,7 +148,7 @@ public class ClackClient {
 					
 				}
 				else {
-					ClackData dataToSendToServer = new MessageClackData(this.userName, userIn ,3);
+					dataToSendToServer = new MessageClackData(this.userName, userIn ,3);
 				}
 		}
 		catch(InputMismatchException ime) {
@@ -253,26 +254,28 @@ public class ClackClient {
 	 * Main method to test the client side 
 	 */
 	public static void main(String[] args) {
-		Scanner s = new Scanner(args[0]).useDelimiter("@|\\n");
-		ClackClient user;
-		
-		if(s.hasNext()) {
-			String username = s.next();
+		if(args != null) {
+			Scanner s = new Scanner(args[0]).useDelimiter("@");
+			ClackClient user;
+			
 			if(s.hasNext()) {
-				String hostname = s.next();
-				if(s.hasNext()) {
-					int port = s.nextInt();
-					user = new ClackClient(username,hostname,port);
+				String username = s.next();
+				if(s.hasNext()) {					
+					String hostname = s.next();
+					if(s.hasNext()) {
+						int port = s.nextInt();
+						user = new ClackClient(username,hostname,port);
+					}else {
+						user = new ClackClient(username,hostname);
+					}
 				}else {
-					user = new ClackClient(username,hostname);
+					user = new ClackClient(username);
 				}
 			}else {
-				user = new ClackClient(username);
+				user = new ClackClient();
 			}
-		}else {
-			user = new ClackClient();
+			user.start();
+			s.close();
 		}
-		user.start();
-		s.close();
 	}
 }
