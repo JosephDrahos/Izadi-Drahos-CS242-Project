@@ -128,16 +128,21 @@ public class ClackServer {
 	 * @param args
 	 */
 	public static void main(String[] args) {
-		if(args != null) {
-			Scanner s = new Scanner(args[0]);
-			ClackServer server;
-			if(s.hasNextInt()) {
-				server = new ClackServer(s.nextInt());
-			}else {
-				server = new ClackServer();
+		try {	
+			if(args != null) {
+				Scanner s = new Scanner(args[0]);
+				ClackServer server;
+				if(s.hasNextInt()) {
+					server = new ClackServer(s.nextInt());
+				}else {
+					server = new ClackServer();
+				}
+				server.start();
+				s.close();
 			}
+		}catch(IndexOutOfBoundsException iobe) {
+			ClackServer server = new ClackServer();
 			server.start();
-			s.close();
 		}
 	}
 }

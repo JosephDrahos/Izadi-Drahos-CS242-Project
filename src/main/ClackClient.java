@@ -253,11 +253,10 @@ public class ClackClient {
 	/**
 	 * Main method to test the client side 
 	 */
-	public static void main(String[] args) {
-		if(args != null) {
+	public static void main(String[] args) {		
+		try {
+			ClackClient user = new ClackClient();
 			Scanner s = new Scanner(args[0]).useDelimiter("@");
-			ClackClient user;
-			
 			if(s.hasNext()) {
 				String username = s.next();
 				if(s.hasNext()) {					
@@ -271,11 +270,15 @@ public class ClackClient {
 				}else {
 					user = new ClackClient(username);
 				}
-			}else {
-				user = new ClackClient();
 			}
-			user.start();
 			s.close();
+			user.start();
+		}catch (ArrayIndexOutOfBoundsException aioe) {
+			ClackClient user = new ClackClient();
+			user.start();
 		}
+			
+			
 	}
 }
+
