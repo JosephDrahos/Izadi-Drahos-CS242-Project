@@ -55,7 +55,7 @@ public class ClackServer {
 			outToClient = new ObjectOutputStream(clientSkt.getOutputStream());
 			inFromClient = new ObjectInputStream(clientSkt.getInputStream());
 			receiveData();
-			
+			dataToSendToClient = dataToReceiveFromClient;
 			sendData();
 			outToClient.close();
 			inFromClient.close();
@@ -128,14 +128,16 @@ public class ClackServer {
 	 * @param args
 	 */
 	public static void main(String[] args) {
-		Scanner s = new Scanner(args[0]);
-		ClackServer server;
-		if(s.hasNextInt()) {
-			server = new ClackServer(s.nextInt());
-		}else {
-			server = new ClackServer();
+		if(args != null) {
+			Scanner s = new Scanner(args[0]);
+			ClackServer server;
+			if(s.hasNextInt()) {
+				server = new ClackServer(s.nextInt());
+			}else {
+				server = new ClackServer();
+			}
+			server.start();
+			s.close();
 		}
-		server.start();
-		s.close();
 	}
 }
