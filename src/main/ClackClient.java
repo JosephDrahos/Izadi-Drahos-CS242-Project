@@ -115,6 +115,7 @@ public class ClackClient {
 		catch(Exception e) {
 			System.err.println(e.getMessage());//	DONT FORGET EXCEPTION HANDLING
 		}
+		inFromStd.close();	
 	}
 	
 	/**
@@ -156,7 +157,7 @@ public class ClackClient {
 		catch(InputMismatchException ime) {
 			System.err.println(ime.getMessage());
 		}
-		inFromStd.close();
+		
 	}
 
 	
@@ -280,7 +281,7 @@ public class ClackClient {
 			user.start();
 		}
 			
-			
+		
 	}
 }
 
