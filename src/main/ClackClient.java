@@ -22,7 +22,7 @@ public class ClackClient {
 	private Scanner inFromStd; 					// scanner for user input from system.in
 	private ObjectOutputStream outToServer;		// The way ClackClient sends data packets
 	private ObjectInputStream inFromServer;		// The way ClackClient receives data packets
-	private static final String KEY = "TIME";   //encryption key
+	//private static final String KEY = "TIME";   //encryption key
 	
 	/**
 	 * Constructor for username, host name, and port,connection is automatically set to open
