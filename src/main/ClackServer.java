@@ -49,20 +49,25 @@ public class ClackServer {
 	 */
 	public void start() {
 		try {
+			
 			ServerSocket sskt = new ServerSocket(port);
 			Socket clientSkt = sskt.accept();
 			
-			outToClient = new ObjectOutputStream(clientSkt.getOutputStream());
-			inFromClient = new ObjectInputStream(clientSkt.getInputStream());
-			receiveData();
-			dataToSendToClient = dataToReceiveFromClient;
-			sendData();
+			while(!clientSkt.isClosed()) {
+				outToClient = new ObjectOutputStream(clientSkt.getOutputStream());
+				inFromClient = new ObjectInputStream(clientSkt.getInputStream());
+				receiveData();
+				dataToSendToClient = dataToReceiveFromClient;
+				sendData();
+			}
+			
 			outToClient.close();
 			inFromClient.close();
 			sskt.close();
 			clientSkt.close();
 		}catch (IOException ioe) {
-			System.err.println("Server IO error");
+			System.err.println(ioe.getMessage());
+			//System.err.println("Server IO error");
 		}
 	}
 

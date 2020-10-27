@@ -22,7 +22,7 @@ public class ClackClient {
 	private Scanner inFromStd; 					// scanner for user input from system.in
 	private ObjectOutputStream outToServer;		// The way ClackClient sends data packets
 	private ObjectInputStream inFromServer;		// The way ClackClient receives data packets
-	private static final String KEY = "TIME";   //encryption key
+	//private static final String KEY = "TIME";   //encryption key
 	
 	/**
 	 * Constructor for username, host name, and port,connection is automatically set to open
@@ -93,16 +93,18 @@ public class ClackClient {
 			
 			inFromStd = new Scanner(System.in);
 			inFromStd.useDelimiter("\r|\n");			
-		
-			outToServer = new ObjectOutputStream(skt.getOutputStream());
 			
-			readClientData();
-			sendData();
+			while(!closeConnection) {
+				outToServer = new ObjectOutputStream(skt.getOutputStream());
 			
+				readClientData();
+				sendData();
 			
-			inFromServer = new ObjectInputStream(skt.getInputStream());
-			receiveData();
-			printData();
+				
+				inFromServer = new ObjectInputStream(skt.getInputStream());
+				receiveData();
+				printData();
+			}
 			//dataToReceiveFromServer = dataToSendToServer; //temporary
 			
 			outToServer.close();
@@ -113,6 +115,7 @@ public class ClackClient {
 		catch(Exception e) {
 			System.err.println(e.getMessage());//	DONT FORGET EXCEPTION HANDLING
 		}
+		inFromStd.close();	
 	}
 	
 	/**
@@ -154,7 +157,7 @@ public class ClackClient {
 		catch(InputMismatchException ime) {
 			System.err.println(ime.getMessage());
 		}
-		inFromStd.close();
+		
 	}
 
 	
@@ -256,7 +259,7 @@ public class ClackClient {
 	public static void main(String[] args) {		
 		try {
 			ClackClient user = new ClackClient();
-			Scanner s = new Scanner(args[0]).useDelimiter("@");
+			Scanner s = new Scanner(args[0]).useDelimiter("@|:");
 			if(s.hasNext()) {
 				String username = s.next();
 				if(s.hasNext()) {					
@@ -278,7 +281,7 @@ public class ClackClient {
 			user.start();
 		}
 			
-			
+		
 	}
 }
 
