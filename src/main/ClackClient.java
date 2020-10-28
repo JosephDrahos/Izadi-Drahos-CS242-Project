@@ -5,7 +5,7 @@ import java.util.Scanner;
 import java.io.*;
 import data.*;
 import java.net.*;
-
+import java.util.ArrayList;
 /**
  * This class represents the client user
  * @author Joseph Drahos Rod Izadi
@@ -151,6 +151,7 @@ public class ClackClient {
 					}
 				}
 				else if(userIn.contains("LISTUSERS")) {
+					ArrayList<ServerSideClientIO> serverSideClientIOList;
 					
 				}
 				else {
@@ -170,6 +171,10 @@ public class ClackClient {
 	 */
 	public void receiveData() {
 		try {
+			if(true) {
+				//dataToReceiveFromServer = (ClackServer) inFromServer.readObject();
+			}
+			
 			dataToReceiveFromServer = (ClackData) inFromServer.readObject();
 		}
 		catch(IOException ioe) {

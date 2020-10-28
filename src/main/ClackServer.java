@@ -55,6 +55,11 @@ public class ClackServer {
 			
 			while(!closeConnection) {
 				
+				ServerSideClientIO ssci = new ServerSideClientIO(this,clientSkt);
+				serverSideClientIOList.add(ssci);
+				Thread ssciThread = new Thread(ssci);
+				ssciThread.start();
+				clientSkt = sskt.accept();
 			}
 			
 			sskt.close();
@@ -65,12 +70,15 @@ public class ClackServer {
 		}
 	}
 
-	public void broadcast(ClackData dataToBroadCastToClients) {
-		
+	public synchronized void broadcast(ClackData dataToBroadCastToClients) {
+		for(ServerSideClientIO x: serverSideClientIOList) {
+			x.setDataToSendClient(dataToBroadCastToClients);
+			x.sendData();
+		}
 	}
 	
-	public void remove(ServerSideClientIO serverSideClientToRemove) {
-		
+	public synchronized void remove(ServerSideClientIO serverSideClientToRemove) {
+		serverSideClientIOList.remove(serverSideClientToRemove);
 	}
 	
 	/*
