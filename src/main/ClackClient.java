@@ -92,18 +92,21 @@ public class ClackClient {
 			Socket skt = new Socket(hostName, port);
 			
 			inFromStd = new Scanner(System.in);
-			inFromStd.useDelimiter("\r|\n");			
+			inFromStd.useDelimiter("\r|\n");	
+			
+			ClientSideServerListener cssl = new ClientSideServerListener(this);
+			Thread csslThread = new Thread(cssl);
+			csslThread.start();
 			
 			while(!closeConnection) {
 				outToServer = new ObjectOutputStream(skt.getOutputStream());
 			
 				readClientData();
 				sendData();
-			
 				
 				inFromServer = new ObjectInputStream(skt.getInputStream());
-				receiveData();
-				printData();
+				//receiveData();
+				//printData();
 			}
 			//dataToReceiveFromServer = dataToSendToServer; //temporary
 			
