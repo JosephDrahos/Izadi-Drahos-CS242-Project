@@ -5,7 +5,7 @@ import java.util.Scanner;
 import java.io.*;
 import data.*;
 import java.net.*;
-
+import java.util.ArrayList;
 /**
  * This class represents the client user
  * @author Joseph Drahos Rod Izadi
@@ -92,18 +92,21 @@ public class ClackClient {
 			Socket skt = new Socket(hostName, port);
 			
 			inFromStd = new Scanner(System.in);
-			inFromStd.useDelimiter("\r|\n");			
+			inFromStd.useDelimiter("\r|\n");	
+			
+			ClientSideServerListener cssl = new ClientSideServerListener(this);
+			Thread csslThread = new Thread(cssl);
+			csslThread.start();
 			
 			while(!closeConnection) {
 				outToServer = new ObjectOutputStream(skt.getOutputStream());
 			
 				readClientData();
 				sendData();
-			
 				
 				inFromServer = new ObjectInputStream(skt.getInputStream());
-				receiveData();
-				printData();
+				//receiveData();
+				//printData();
 			}
 			//dataToReceiveFromServer = dataToSendToServer; //temporary
 			
@@ -148,6 +151,7 @@ public class ClackClient {
 					}
 				}
 				else if(userIn.contains("LISTUSERS")) {
+					ArrayList<ServerSideClientIO> serverSideClientIOList;
 					
 				}
 				else {
@@ -167,6 +171,10 @@ public class ClackClient {
 	 */
 	public void receiveData() {
 		try {
+			if(true) {
+				//dataToReceiveFromServer = (ClackServer) inFromServer.readObject();
+			}
+			
 			dataToReceiveFromServer = (ClackData) inFromServer.readObject();
 		}
 		catch(IOException ioe) {

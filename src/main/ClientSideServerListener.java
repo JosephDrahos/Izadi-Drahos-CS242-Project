@@ -9,10 +9,10 @@ public class ClientSideServerListener implements Runnable{
 	
 	@Override
 	public void run() {
-		// TODO Auto-generated method stub
-		while(true) {
+		ClackClient check = client;
+		while(client.equals(check)) {
 			client.receiveData();
-			client.sendData();
+			client.printData();
 		}
 	}
 
