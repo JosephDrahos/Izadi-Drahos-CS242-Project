@@ -48,6 +48,7 @@ public class ServerSideClientIO implements Runnable{
 			dataToReceiveFromClient = (ClackData) inFromClient.readObject();
 			this.clientUserName = dataToReceiveFromClient.getUserName();
 			
+			//message with listuser type
 			if(dataToReceiveFromClient.getType() == 0) {
 				dataToSendToClient = new MessageClackData("Server",server.getUserList(),3);
 				System.out.println(dataToSendToClient.toString());
