@@ -100,14 +100,13 @@ public class ClackClient {
 			while(!closeConnection) {
 				outToServer = new ObjectOutputStream(skt.getOutputStream());
 				
-				
 				readClientData();
 				sendData();
 				
 				inFromServer = new ObjectInputStream(skt.getInputStream());
 				
-				//receiveData();
-				//printData();
+				receiveData();
+				printData();
 			}
 			
 			outToServer.close();
@@ -172,11 +171,9 @@ public class ClackClient {
 	 */
 	public void receiveData() {
 		try {
-			if(inFromServer != null) {
-				inFromServer.read();
-				dataToReceiveFromServer = (ClackData) inFromServer.readObject();
-				
-			}
+			//System.out.println(inFromServer);
+			dataToReceiveFromServer = (ClackData) inFromServer.readObject();
+
 		}
 		catch(IOException ioe) {
 			System.err.println("ERROR: Could not receive data");

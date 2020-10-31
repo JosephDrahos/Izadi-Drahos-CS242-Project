@@ -29,11 +29,13 @@ public class ServerSideClientIO implements Runnable{
 	@Override
 	public void run() {
 		try {
+			
 			while(!clientSocket.isClosed() && !this.closeConnection) {
 				outToClient = new ObjectOutputStream(clientSocket.getOutputStream());
 				inFromClient = new ObjectInputStream(clientSocket.getInputStream());
 				receiveData();
 				server.broadcast(dataToSendToClient);
+				//Thread.sleep(1000);
 			}
 			
 			
@@ -70,14 +72,15 @@ public class ServerSideClientIO implements Runnable{
 				dataToSendToClient = new MessageClackData("Server",server.getUserList(),3);
 				System.out.println(dataToSendToClient.toString());
 			}else if(dataToReceiveFromClient.getType() == 1) {
-				dataToSendToClient = new MessageClackData("Server","Disconnected From Server",3);
+				dataToSendToClient = null;
 			}else {
 				System.out.println(dataToReceiveFromClient.toString());
 				dataToSendToClient = dataToReceiveFromClient;
 			}
 			
 			outToClient.writeObject(dataToSendToClient);
-			System.out.println("Sending Data");
+			System.out.println("Sending Data" + dataToSendToClient);
+			outToClient.flush();
 		}
 		catch(IOException ioe) {
 			System.err.println("ERROR: Could not send data");
