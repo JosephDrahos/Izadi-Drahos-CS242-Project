@@ -80,7 +80,6 @@ public class ServerSideClientIO implements Runnable{
 			
 			outToClient.writeObject(dataToSendToClient);
 			System.out.println("Sending Data" + dataToSendToClient);
-			outToClient.flush();
 		}
 		catch(IOException ioe) {
 			System.err.println("ERROR: Could not send data");
