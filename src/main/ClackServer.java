@@ -5,6 +5,7 @@ import data.ClackData;
 import java.io.*;
 import java.lang.Math;
 import java.net.*;
+import java.util.List;
 import java.util.ArrayList;
 import java.util.Scanner;
 
@@ -72,6 +73,7 @@ public class ClackServer {
 
 	public synchronized void broadcast(ClackData dataToBroadCastToClients) {
 		for(ServerSideClientIO x: serverSideClientIOList) {
+			System.out.println(x);
 			x.setDataToSendClient(dataToBroadCastToClients);
 			x.sendData();
 		}
@@ -79,6 +81,16 @@ public class ClackServer {
 	
 	public synchronized void remove(ServerSideClientIO serverSideClientToRemove) {
 		serverSideClientIOList.remove(serverSideClientToRemove);
+	}
+	
+	public String getUserList() {
+		String userList = "List Of Current Users: ";
+		
+		for(ServerSideClientIO x: serverSideClientIOList) {
+			userList += x.getUserName() + " ";
+		}
+		
+		return userList;
 	}
 	
 	/*

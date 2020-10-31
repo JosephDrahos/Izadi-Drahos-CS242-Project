@@ -5,7 +5,6 @@ import java.util.Scanner;
 import java.io.*;
 import data.*;
 import java.net.*;
-import java.util.ArrayList;
 /**
  * This class represents the client user
  * @author Joseph Drahos Rod Izadi
@@ -104,16 +103,18 @@ public class ClackClient {
 				readClientData();
 				sendData();
 				
+				
 				inFromServer = new ObjectInputStream(skt.getInputStream());
+				
 				//receiveData();
 				//printData();
 			}
-			//dataToReceiveFromServer = dataToSendToServer; //temporary
 			
 			outToServer.close();
 			inFromServer.close();
 			inFromStd.close();
 			skt.close();
+			System.out.println(skt.isClosed());
 		}	
 		catch(Exception e) {
 			System.err.println(e.getMessage());//	DONT FORGET EXCEPTION HANDLING
@@ -151,7 +152,7 @@ public class ClackClient {
 					}
 				}
 				else if(userIn.contains("LISTUSERS")) {
-					ArrayList<ServerSideClientIO> serverSideClientIOList;
+					dataToSendToServer = new MessageClackData(this.userName,userIn,0);
 					
 				}
 				else {
@@ -171,11 +172,9 @@ public class ClackClient {
 	 */
 	public void receiveData() {
 		try {
-			if(true) {
-				//dataToReceiveFromServer = (ClackServer) inFromServer.readObject();
+			if(inFromServer != null && inFromServer.available() != 0) {
+				dataToReceiveFromServer = (ClackData) inFromServer.readObject();
 			}
-			
-			dataToReceiveFromServer = (ClackData) inFromServer.readObject();
 		}
 		catch(IOException ioe) {
 			System.err.println("ERROR: Could not receive data");
@@ -201,7 +200,10 @@ public class ClackClient {
 	 * This method prints out to all the clients the information sent by a particular user 
 	 */
 	public void printData() {
-		System.out.println(dataToReceiveFromServer.getData());
+		if(dataToReceiveFromServer != null)
+			System.out.println(dataToReceiveFromServer.getData());
+		else
+			System.out.println("Null Data");
 	}
 	
 	/**
@@ -259,6 +261,10 @@ public class ClackClient {
 		String output;
 		output = "Username: " + this.userName + "\n" + "hostName: " + this.hostName + "\n" + "Port: " + getPort() + "\n" + "Closed Connection: " + this.closeConnection + "\n" + "Data to Send: " + this.dataToSendToServer + "\n" + "Data to Receive: " + this.dataToReceiveFromServer + "\n";
 		return output;
+	}
+	
+	public boolean checkConnection() {
+		return this.closeConnection;
 	}
 	
 	/**
