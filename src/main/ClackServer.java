@@ -55,7 +55,6 @@ public class ClackServer {
 			Socket clientSkt = sskt.accept();
 			
 			while(!closeConnection) {
-				
 				ServerSideClientIO ssci = new ServerSideClientIO(this,clientSkt);
 				serverSideClientIOList.add(ssci);
 				Thread ssciThread = new Thread(ssci);
