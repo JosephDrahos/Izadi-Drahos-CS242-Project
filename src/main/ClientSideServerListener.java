@@ -22,9 +22,9 @@ public class ClientSideServerListener implements Runnable{
 				//System.out.println("Receiving Data");
 				client.receiveData();
 				client.printData();
-				Thread.sleep(1000);
+				//Thread.sleep(1000);
 			}catch (Exception e) {
-				System.out.println(e.getMessage());
+				System.err.println("Listener error" + e.getMessage());
 			}
 		}
 		System.out.println("Listener closed");

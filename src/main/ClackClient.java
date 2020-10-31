@@ -99,10 +99,10 @@ public class ClackClient {
 			
 			while(!closeConnection) {
 				outToServer = new ObjectOutputStream(skt.getOutputStream());
-			
+				
+				
 				readClientData();
 				sendData();
-				
 				
 				inFromServer = new ObjectInputStream(skt.getInputStream());
 				
@@ -132,24 +132,26 @@ public class ClackClient {
 		try {
 				userIn = inFromStd.nextLine();
 				if(userIn.contains("DONE")) {
+					dataToSendToServer = new MessageClackData(this.userName,userIn,1);
 					this.closeConnection = true;
 					System.out.println("Connection is Closed");
 				}
 				else if(userIn.contains("SENDFILE")) {
 					String fileName = new String();
+					FileClackData userFile = new FileClackData();
 					if(inFromStd.hasNext()) {
 						try {
 							fileName = inFromStd.nextLine();
 							BufferedReader bufferedReader = new BufferedReader(new FileReader(fileName));
-							FileClackData userFile = new FileClackData(this.userName,fileName,3);
+							userFile = new FileClackData(this.userName,fileName,3);
 							System.out.println("File " + fileName + " was read");
 							bufferedReader.close();
 						}
 						catch(IOException IOE) {
-							FileClackData userFile = new FileClackData();
 							System.err.println("File " + fileName + " could not be read.");
 						}
 					}
+					dataToSendToServer = userFile;
 				}
 				else if(userIn.contains("LISTUSERS")) {
 					dataToSendToServer = new MessageClackData(this.userName,userIn,0);
@@ -164,16 +166,15 @@ public class ClackClient {
 		}
 		
 	}
-
-	
 	
 	/**
 	 * This method receives an instance of clack data from the server
 	 */
 	public void receiveData() {
 		try {
-			if(inFromServer != null && inFromServer.available() != 0) {
+			if(inFromServer != null) {
 				dataToReceiveFromServer = (ClackData) inFromServer.readObject();
+				
 			}
 		}
 		catch(IOException ioe) {
@@ -202,8 +203,8 @@ public class ClackClient {
 	public void printData() {
 		if(dataToReceiveFromServer != null)
 			System.out.println(dataToReceiveFromServer.getData());
-		else
-			System.out.println("Null Data");
+		//else
+			//System.out.println("Null Data");
 	}
 	
 	/**
