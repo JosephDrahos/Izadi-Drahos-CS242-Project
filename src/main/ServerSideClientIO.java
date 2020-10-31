@@ -29,18 +29,18 @@ public class ServerSideClientIO implements Runnable{
 	@Override
 	public void run() {
 		try {
-			while(!clientSocket.isClosed()) {
+			while(!clientSocket.isClosed() && !this.closeConnection) {
 				outToClient = new ObjectOutputStream(clientSocket.getOutputStream());
 				inFromClient = new ObjectInputStream(clientSocket.getInputStream());
 				receiveData();
 				server.broadcast(dataToSendToClient);
-				System.out.println(clientSocket.isClosed());
 			}
-			System.out.println("Removing " + this);
-			server.remove(this);
+			
+			
 		}catch (Exception e) {
 			System.out.println(e.getMessage());
 		}
+		
 	}
 	
 	public void receiveData() {
@@ -48,14 +48,12 @@ public class ServerSideClientIO implements Runnable{
 			dataToReceiveFromClient = (ClackData) inFromClient.readObject();
 			this.clientUserName = dataToReceiveFromClient.getUserName();
 			
-			//message with listuser type
-			if(dataToReceiveFromClient.getType() == 0) {
-				dataToSendToClient = new MessageClackData("Server",server.getUserList(),3);
-				System.out.println(dataToSendToClient.toString());
-			}else {
-				System.out.println(dataToReceiveFromClient.toString());
-				dataToSendToClient = dataToReceiveFromClient;
+			if(dataToReceiveFromClient.getType() == 1) {
+				this.closeConnection = true;
+				System.out.println("Removing " + this);
+				server.remove(this);
 			}
+			
 		}
 		catch(IOException ioe) {
 			System.err.println("ERROR: Could not receive data");
@@ -67,6 +65,17 @@ public class ServerSideClientIO implements Runnable{
 	
 	public void sendData() {
 		try {
+			//message with listuser type
+			if(dataToReceiveFromClient.getType() == 0) {
+				dataToSendToClient = new MessageClackData("Server",server.getUserList(),3);
+				System.out.println(dataToSendToClient.toString());
+			}else if(dataToReceiveFromClient.getType() == 1) {
+				dataToSendToClient = new MessageClackData("Server","Disconnected From Server",3);
+			}else {
+				System.out.println(dataToReceiveFromClient.toString());
+				dataToSendToClient = dataToReceiveFromClient;
+			}
+			
 			outToClient.writeObject(dataToSendToClient);
 			System.out.println("Sending Data");
 		}
