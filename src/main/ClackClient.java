@@ -173,6 +173,7 @@ public class ClackClient {
 	public void receiveData() {
 		try {
 			if(inFromServer != null) {
+				inFromServer.read();
 				dataToReceiveFromServer = (ClackData) inFromServer.readObject();
 				
 			}
