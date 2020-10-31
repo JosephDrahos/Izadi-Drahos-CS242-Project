@@ -1,7 +1,7 @@
 package main;
 
 import java.io.*;
-import data.ClackData;
+import data.*;
 import java.net.*;
 
 public class ServerSideClientIO implements Runnable{
@@ -12,7 +12,7 @@ public class ServerSideClientIO implements Runnable{
 	private ObjectOutputStream outToClient;
 	private ClackServer server;
 	private Socket clientSocket;
-	
+	private String clientUserName;
 	
 	ServerSideClientIO(ClackServer server, Socket clientSocket){
 		this.server = server;
@@ -22,6 +22,7 @@ public class ServerSideClientIO implements Runnable{
 		this.dataToSendToClient = null;
 		this.inFromClient = null;
 		this.outToClient = null;
+		this.clientUserName = null;
 	}
 
 
@@ -33,20 +34,26 @@ public class ServerSideClientIO implements Runnable{
 				inFromClient = new ObjectInputStream(clientSocket.getInputStream());
 				receiveData();
 				server.broadcast(dataToSendToClient);
+				System.out.println(clientSocket.isClosed());
 			}
-			
+			System.out.println("Removing " + this);
+			server.remove(this);
 		}catch (Exception e) {
 			System.out.println(e.getMessage());
 		}
 	}
 	
 	public void receiveData() {
-		try {
-			if(!clientSocket.isClosed()) {
-				dataToReceiveFromClient = (ClackData) inFromClient.readObject();
-				System.out.println(dataToReceiveFromClient.toString());
+		try { 
+			dataToReceiveFromClient = (ClackData) inFromClient.readObject();
+			this.clientUserName = dataToReceiveFromClient.getUserName();
+			
+			if(dataToReceiveFromClient.getType() == 0) {
+				dataToSendToClient = new MessageClackData("Server",server.getUserList(),3);
+				System.out.println(dataToSendToClient.toString());
 			}else {
-				server.remove(this);
+				System.out.println(dataToReceiveFromClient.toString());
+				dataToSendToClient = dataToReceiveFromClient;
 			}
 		}
 		catch(IOException ioe) {
@@ -60,6 +67,7 @@ public class ServerSideClientIO implements Runnable{
 	public void sendData() {
 		try {
 			outToClient.writeObject(dataToSendToClient);
+			System.out.println("Sending Data");
 		}
 		catch(IOException ioe) {
 			System.err.println("ERROR: Could not send data");
@@ -68,5 +76,9 @@ public class ServerSideClientIO implements Runnable{
 	
 	public void setDataToSendClient(ClackData dataToSendToClient) {
 		this.dataToSendToClient = dataToSendToClient;
+	}
+	
+	public String getUserName() {
+		return this.clientUserName;
 	}
 }
