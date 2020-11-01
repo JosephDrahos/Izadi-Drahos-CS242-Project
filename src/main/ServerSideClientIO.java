@@ -29,13 +29,16 @@ public class ServerSideClientIO implements Runnable{
 	@Override
 	public void run() {
 		try {
+			
 			while(!clientSocket.isClosed() && !this.closeConnection) {
 				outToClient = new ObjectOutputStream(clientSocket.getOutputStream());
 				inFromClient = new ObjectInputStream(clientSocket.getInputStream());
 				receiveData();
-				server.broadcast(dataToSendToClient);
+				server.broadcast(dataToReceiveFromClient);
+				//Thread.sleep(1000);
 			}
-			
+			System.out.println("Removing " + this);
+			server.remove(this);
 			
 		}catch (Exception e) {
 			System.out.println(e.getMessage());
@@ -50,8 +53,6 @@ public class ServerSideClientIO implements Runnable{
 			
 			if(dataToReceiveFromClient.getType() == 1) {
 				this.closeConnection = true;
-				System.out.println("Removing " + this);
-				server.remove(this);
 			}
 			
 		}
@@ -66,18 +67,19 @@ public class ServerSideClientIO implements Runnable{
 	public void sendData() {
 		try {
 			//message with listuser type
-			if(dataToReceiveFromClient.getType() == 0) {
+			if(dataToSendToClient.getType() == 0) {
 				dataToSendToClient = new MessageClackData("Server",server.getUserList(),3);
 				System.out.println(dataToSendToClient.toString());
-			}else if(dataToReceiveFromClient.getType() == 1) {
-				dataToSendToClient = new MessageClackData("Server","Disconnected From Server",3);
+			}else if(dataToSendToClient.getType() == 1) {
+				dataToSendToClient = null;
 			}else {
-				System.out.println(dataToReceiveFromClient.toString());
-				dataToSendToClient = dataToReceiveFromClient;
+				System.out.println(dataToSendToClient.toString());
+				//dataToSendToClient = dataToReceiveFromClient;
 			}
 			
 			outToClient.writeObject(dataToSendToClient);
-			System.out.println("Sending Data");
+			System.out.println("Sending Data" + dataToSendToClient);
+			outToClient.flush();
 		}
 		catch(IOException ioe) {
 			System.err.println("ERROR: Could not send data");
