@@ -181,6 +181,9 @@ public class ClackClient {
 		catch(ClassNotFoundException CNFE) {
 			System.err.println("ERROR: Class was not found when recieving data");
 		}
+		/*catch(NullPointerException NPE0) {
+			System.err.print("");
+		}*/
 	}
 	
 	/**
