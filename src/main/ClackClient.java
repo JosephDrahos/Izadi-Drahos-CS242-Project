@@ -192,6 +192,7 @@ public class ClackClient {
 	public void sendData() {
 		try {
 			outToServer.writeObject(dataToSendToServer);
+			outToServer.flush();
 		}
 		catch(IOException ioe) {
 			System.err.println("ERROR: Could not send data");
