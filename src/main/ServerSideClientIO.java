@@ -29,10 +29,10 @@ public class ServerSideClientIO implements Runnable{
 	@Override
 	public void run() {
 		try {
+			this.outToClient = new ObjectOutputStream(clientSocket.getOutputStream());
+			this.inFromClient = new ObjectInputStream(clientSocket.getInputStream());
 			
 			while(!clientSocket.isClosed() && !this.closeConnection) {
-				outToClient = new ObjectOutputStream(clientSocket.getOutputStream());
-				inFromClient = new ObjectInputStream(clientSocket.getInputStream());
 				receiveData();
 				server.broadcast(dataToReceiveFromClient);
 				//Thread.sleep(1000);
@@ -40,8 +40,8 @@ public class ServerSideClientIO implements Runnable{
 			System.out.println("Removing " + this);
 			server.remove(this);
 			
-		}catch (Exception e) {
-			System.out.println(e.getMessage());
+		}catch (IOException ie) {
+			System.out.println(ie.getMessage());
 		}
 		
 	}
@@ -50,11 +50,10 @@ public class ServerSideClientIO implements Runnable{
 		try { 
 			dataToReceiveFromClient = (ClackData) inFromClient.readObject();
 			this.clientUserName = dataToReceiveFromClient.getUserName();
-			
+		
 			if(dataToReceiveFromClient.getType() == 1) {
 				this.closeConnection = true;
 			}
-			
 		}
 		catch(IOException ioe) {
 			System.err.println("ERROR: Could not receive data");
@@ -74,11 +73,9 @@ public class ServerSideClientIO implements Runnable{
 				dataToSendToClient = null;
 			}else {
 				System.out.println(dataToSendToClient.toString());
-				//dataToSendToClient = dataToReceiveFromClient;
 			}
 			
 			outToClient.writeObject(dataToSendToClient);
-			System.out.println("Sending Data" + dataToSendToClient);
 			outToClient.flush();
 		}
 		catch(IOException ioe) {
@@ -88,6 +85,13 @@ public class ServerSideClientIO implements Runnable{
 	
 	public void setDataToSendClient(ClackData dataToSendToClient) {
 		this.dataToSendToClient = dataToSendToClient;
+	}
+	
+	public int getReceivedDataType() {
+		if(dataToReceiveFromClient == null) {
+			return -1;
+		}
+		return this.dataToReceiveFromClient.getType();
 	}
 	
 	public String getUserName() {
