@@ -13,7 +13,7 @@ public class ClientSideServerListener implements Runnable{
 	}
 	
 	/**
-	 * Thread run function
+	 * This run function receives data from server and prints to client
 	 */
 	@Override
 	public void run() {
