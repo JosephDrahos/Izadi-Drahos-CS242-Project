@@ -17,16 +17,14 @@ public class ClientSideServerListener implements Runnable{
 	 */
 	@Override
 	public void run() {
-		while(client.checkConnection() == false) {
-			
-				//System.out.println("Receiving Data");
-			client.receiveData();
-			client.printData();
-				//Thread.sleep(1000);
-			
-			
+		while(!client.checkConnection()) {
+			try {
+				client.receiveData();
+				client.printData();
+			}catch (Exception e) {
+				
+			}
 		}
-		System.out.println("Listener closed");
 	}
 
 }

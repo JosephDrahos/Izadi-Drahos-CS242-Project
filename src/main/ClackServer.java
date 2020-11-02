@@ -71,10 +71,19 @@ public class ClackServer {
 	}
 
 	public synchronized void broadcast(ClackData dataToBroadCastToClients) {
-		for(ServerSideClientIO x: serverSideClientIOList) {
-			System.out.println(x);
-			x.setDataToSendClient(dataToBroadCastToClients);
-			x.sendData();
+		if(dataToBroadCastToClients.getType() == 0) {
+			for(ServerSideClientIO x : serverSideClientIOList) {
+				if(x.getReceivedDataType() == 0) {
+					x.setDataToSendClient(dataToBroadCastToClients);
+					x.sendData();
+				}
+			}
+		}else {
+			for(ServerSideClientIO x: serverSideClientIOList) {
+				System.out.println(x);
+				x.setDataToSendClient(dataToBroadCastToClients);
+				x.sendData();
+			}
 		}
 	}
 	
@@ -137,7 +146,7 @@ public class ClackServer {
 					server = new ClackServer();
 				}
 				server.start();
-				s.close();
+				s.close(); 
 			}
 		}catch(IndexOutOfBoundsException iobe) {
 			ClackServer server = new ClackServer();
