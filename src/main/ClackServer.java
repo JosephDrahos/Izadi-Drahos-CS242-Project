@@ -137,7 +137,7 @@ public class ClackServer {
 					server = new ClackServer();
 				}
 				server.start();
-				s.close();
+				s.close(); 
 			}
 		}catch(IndexOutOfBoundsException iobe) {
 			ClackServer server = new ClackServer();
