@@ -1,6 +1,6 @@
 package main;
 
-import data.ClackData;
+import data.*;
 
 import java.io.*;
 import java.lang.Math;
@@ -69,7 +69,10 @@ public class ClackServer {
 			//System.err.println("Server IO error");
 		}
 	}
-
+	/**
+	 * Broadcasts ClackData object to list of users connected to server
+	 * @param dataToBroadCastToClients
+	 */
 	public synchronized void broadcast(ClackData dataToBroadCastToClients) {
 		if(dataToBroadCastToClients.getType() == 0) {
 			for(ServerSideClientIO x : serverSideClientIOList) {
@@ -86,11 +89,19 @@ public class ClackServer {
 			}
 		}
 	}
-	
+	/**
+	 * Removes client from list of users connected to server
+	 * @param serverSideClientToRemove
+	 */
 	public synchronized void remove(ServerSideClientIO serverSideClientToRemove) {
 		serverSideClientIOList.remove(serverSideClientToRemove);
+		broadcast(new MessageClackData("Server", serverSideClientToRemove.getUserName()+" has left the server",3));
 	}
 	
+	/**
+	 * Returns list of users connected to server
+	 * @return
+	 */
 	public String getUserList() {
 		String userList = "List Of Current Users: ";
 		
