@@ -95,25 +95,21 @@ public class ClackClient {
 			
 			ClientSideServerListener cssl = new ClientSideServerListener(this);
 			Thread csslThread = new Thread(cssl);
+			this.outToServer = new ObjectOutputStream(skt.getOutputStream());
+			this.inFromServer = new ObjectInputStream(skt.getInputStream());
+			outToServer.writeObject(new MessageClackData(this.userName,this.userName + " has joined!",2));
 			csslThread.start();
 			
-			while(!closeConnection) {
-				outToServer = new ObjectOutputStream(skt.getOutputStream());
-				
+			while(!closeConnection && !skt.isClosed()) {
 				readClientData();
-				sendData();
-				
-				inFromServer = new ObjectInputStream(skt.getInputStream());
-				
-				receiveData();
-				printData();
+				sendData();	
 			}
-			
+			this.closeConnection = true;
 			outToServer.close();
 			inFromServer.close();
 			inFromStd.close();
 			skt.close();
-			System.out.println(skt.isClosed());
+			System.out.println("Connection With Server Has Closed.");
 		}	
 		catch(Exception e) {
 			System.err.println(e.getMessage());//	DONT FORGET EXCEPTION HANDLING
@@ -204,7 +200,7 @@ public class ClackClient {
 	 */
 	public void printData() {
 		if(dataToReceiveFromServer != null)
-			System.out.println(dataToReceiveFromServer.getData());
+			System.out.println(dataToReceiveFromServer.getUserName() + ": " + dataToReceiveFromServer.getData());
 		//else
 			//System.out.println("Null Data");
 	}
