@@ -27,6 +27,11 @@ public class ServerSideClientIO implements Runnable{
 
 
 	@Override
+	/**
+	 * Initializes input and output stream of client
+	 * Receives data from the client and broadcasts data to rest of clients
+	 * Removes client from users when client connection is closed
+	 */
 	public void run() {
 		try {
 			this.outToClient = new ObjectOutputStream(clientSocket.getOutputStream());
@@ -46,6 +51,10 @@ public class ServerSideClientIO implements Runnable{
 		
 	}
 	
+	/**
+	 * Receives data from the client and sends it to server
+	 * Also handles logging out of the server
+	 */
 	public void receiveData() {
 		try { 
 			dataToReceiveFromClient = (ClackData) inFromClient.readObject();
@@ -62,7 +71,9 @@ public class ServerSideClientIO implements Runnable{
 			System.err.println("ERROR: Class was not found when recieving data");
 		}
 	}
-	
+	/**
+	 * Sends data to the client
+	 */
 	public void sendData() {
 		try {
 			//message with listuser type
@@ -83,10 +94,18 @@ public class ServerSideClientIO implements Runnable{
 		}
 	}
 	
+	/**
+	 * Sets the data to send to the client
+	 * @param dataToSendToClient
+	 */
 	public void setDataToSendClient(ClackData dataToSendToClient) {
 		this.dataToSendToClient = dataToSendToClient;
 	}
-	
+	/**
+	 * Is used to check if client wishes to LISTUSERS
+	 * if not then type returned is -1 aka a type which does not exist
+	 * @return
+	 */
 	public int getReceivedDataType() {
 		if(dataToReceiveFromClient == null) {
 			return -1;
@@ -94,6 +113,10 @@ public class ServerSideClientIO implements Runnable{
 		return this.dataToReceiveFromClient.getType();
 	}
 	
+	/**
+	 * Returns username of client
+	 * @return
+	 */
 	public String getUserName() {
 		return this.clientUserName;
 	}
