@@ -1,1 +1,1 @@
-Client and server code for Clack (a slack code).
+Client and server code for Clack (a Slack clone).
